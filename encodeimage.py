@@ -53,6 +53,5 @@ else:
                 source_file = f"./add_to_database/{image}"
                 destination_folder = "./already_add_to_database/"
                 shutil.move(source_file, destination_folder)
-
         np.save(file_path_image, known_face_encodings)
         np.save(file_path_name, face_names)
