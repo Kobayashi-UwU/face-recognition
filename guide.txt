@@ -1,5 +1,0 @@
-user guideline
-register image
-encode image
-regcognition
-deletemember
