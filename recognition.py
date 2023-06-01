@@ -25,10 +25,17 @@ class FaceRecognition:
     face_locations = []
     face_encodings = []
     face_names = []
-    known_face_encodings = np.load(file_path_image)
-    known_face_encodings = np.array(known_face_encodings, dtype=np.float64)
-    known_face_names = np.load(file_path_name)
-    known_face_names = np.array(known_face_names)
+    file_size_name = os.path.getsize(file_path_name)
+
+    # Check if the file is empty
+    if file_size_name == 0:
+        print("Database is empty")
+        sys.exit()
+    else:
+        known_face_encodings = np.load(file_path_image)
+        known_face_encodings = np.array(known_face_encodings, dtype=np.float64)
+        known_face_names = np.load(file_path_name)
+        known_face_names = np.array(known_face_names)
 
     process_current_frame = True
 
