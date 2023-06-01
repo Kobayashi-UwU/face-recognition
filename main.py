@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.font as tkFont
 import subprocess
+from tkinter import *
 
 
 class App:
@@ -72,4 +73,4 @@ class App:
 if __name__ == "__main__":
     root = tk.Tk()
     app = App(root)
-    root.mainloop()
+    # root.mainloop()

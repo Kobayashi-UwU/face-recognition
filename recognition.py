@@ -71,10 +71,15 @@ class FaceRecognition:
                     )
                     best_match_index = np.argmin(face_distances)
 
-                    if face_distances[best_match_index] <= 0.6:
+                    if face_distances[best_match_index] <= 0.99:
                         name = self.known_face_names[best_match_index]
                         confidence = face_confidence(face_distances[best_match_index])
                         self.face_names.append(f"{name} ({confidence})")
+                        ##################################
+                        # open the door
+                        print("unlock")
+                        sys.exit()
+                        ##################################
                     else:
                         self.face_names.append("Unknown")
 
