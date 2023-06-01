@@ -29,6 +29,6 @@ if name_of_image != None:
         print("Error: not found humen face")
         os.remove(f"./add_to_database/{name_of_image}.jpg")
 
-
+#
 else:
     print("Need name of picture")
