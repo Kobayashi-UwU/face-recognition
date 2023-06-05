@@ -22,6 +22,7 @@ def face_confidence(face_distance, face_match_threshold=0.6):
 class FaceRecognition:
     file_path_image = "encodedimage.npy"
     file_path_name = "encodedname.npy"
+    file_path_id = "encodedid.npy"
     face_locations = []
     face_encodings = []
     face_names = []
@@ -36,6 +37,8 @@ class FaceRecognition:
         known_face_encodings = np.array(known_face_encodings, dtype=np.float64)
         known_face_names = np.load(file_path_name)
         known_face_names = np.array(known_face_names)
+        known_face_id = np.load(file_path_id)
+        known_face_id = np.array(known_face_id)
 
     process_current_frame = True
 
@@ -73,11 +76,12 @@ class FaceRecognition:
 
                     if face_distances[best_match_index] <= 0.99:
                         name = self.known_face_names[best_match_index]
+                        id = self.known_face_id[best_match_index]
                         confidence = face_confidence(face_distances[best_match_index])
-                        self.face_names.append(f"{name} ({confidence})")
+                        self.face_names.append(f"{id} {name} ({confidence})")
                         ##################################
                         # open the door
-                        print("unlock")
+                        print(f"unlock for {id} {name}")
                         sys.exit()
                         ##################################
                     else:

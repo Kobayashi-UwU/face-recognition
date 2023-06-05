@@ -5,7 +5,12 @@ import face_recognition
 import numpy as np
 import shutil
 
+id_of_image = input("Enter your ID: ")
 name_of_image = input("Enter your Name: ")
+
+file_path_image = "encodedimage.npy"
+file_path_name = "encodedname.npy"
+file_path_id = "encodedid.npy"
 
 if name_of_image != None:
     cap = cv2.VideoCapture(0)
@@ -33,13 +38,9 @@ if name_of_image != None:
         if len(os.listdir(folder_path)) == 0:
             print("There is no image to add to Database")
         else:
-            file_path_image = "encodedimage.npy"
-            file_path_name = "encodedname.npy"
-
             if os.path.getsize(file_path_image) == 0:
                 known_face_encodings = np.empty((0, 128))
                 face_names = []
-
                 for image in os.listdir("add_to_database"):
                     face_image = face_recognition.load_image_file(
                         f"add_to_database/{image}"
@@ -56,11 +57,12 @@ if name_of_image != None:
                         source_file = f"./add_to_database/{image}"
                         destination_folder = "./already_add_to_database/"
                         shutil.move(source_file, destination_folder)
-
                 face_names = np.array(face_names)
-                print(face_names)
+                face_id = np.array(id_of_image)
+                print(f"{face_id} {face_names}")
                 np.save(file_path_image, known_face_encodings)
                 np.save(file_path_name, face_names)
+                np.save(file_path_id, id_of_image)
 
             else:
                 known_face_encodings = np.load(file_path_image)
@@ -82,8 +84,15 @@ if name_of_image != None:
                         source_file = f"./add_to_database/{image}"
                         destination_folder = "./already_add_to_database/"
                         shutil.move(source_file, destination_folder)
+                face_id = np.array(id_of_image)
+                know_face_id = []
+                know_face_id = np.load(file_path_id)
+                know_face_id = np.append(know_face_id, face_id)
+                print(f"{know_face_id} {face_names}")
                 np.save(file_path_image, known_face_encodings)
                 np.save(file_path_name, face_names)
+                np.save(file_path_id, know_face_id)
+
     else:
         print("No face found.")
         os.remove(f"./add_to_database/{name_of_image}.jpg")
