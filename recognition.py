@@ -83,7 +83,8 @@ class FaceRecognition:
                                 face_distances[best_match_index]
                             )
                             self.face_names.append(f"{face_id} {name} ({confidence})")
-                            print(f"unlock for {face_id} {name}")
+                            timestamp = datetime.datetime.now()
+                            print(f"unlock for {timestamp} {face_id} {name}")
                             buffer.append((name, datetime.datetime.now()))
                         else:
                             # Remove the name from the buffer after 1 minute
