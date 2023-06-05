@@ -3,6 +3,7 @@ import os, sys
 import cv2
 import numpy as np
 import math
+import datetime
 
 
 # Helper
@@ -44,6 +45,7 @@ class FaceRecognition:
 
     def run_recognition(self):
         video_capture = cv2.VideoCapture(0)
+        buffer = []
 
         if not video_capture.isOpened():
             sys.exit("Video source not found...")
@@ -73,17 +75,27 @@ class FaceRecognition:
                         self.known_face_encodings, face_encoding
                     )
                     best_match_index = np.argmin(face_distances)
-
                     if face_distances[best_match_index] <= 0.99:
                         name = self.known_face_names[best_match_index]
-                        id = self.known_face_id[best_match_index]
-                        confidence = face_confidence(face_distances[best_match_index])
-                        self.face_names.append(f"{id} {name} ({confidence})")
-                        ##################################
-                        # open the door
-                        print(f"unlock for {id} {name}")
-                        sys.exit()
-                        ##################################
+                        if name not in [entry[0] for entry in buffer]:
+                            face_id = self.known_face_id[best_match_index]
+                            confidence = face_confidence(
+                                face_distances[best_match_index]
+                            )
+                            self.face_names.append(f"{face_id} {name} ({confidence})")
+                            print(f"unlock for {face_id} {name}")
+                            buffer.append((name, datetime.datetime.now()))
+                        else:
+                            # Remove the name from the buffer after 1 minute
+                            for i, entry in enumerate(buffer):
+                                if entry[0] == name:
+                                    current_time = datetime.datetime.now()
+                                    time_difference = current_time - entry[1]
+                                    buffer_timeout = datetime.timedelta(minutes=1)
+                                    if time_difference >= buffer_timeout:
+                                        buffer.pop(i)
+                                    break
+
                     else:
                         self.face_names.append("Unknown")
 

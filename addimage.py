@@ -4,6 +4,7 @@ import os, sys
 import face_recognition
 import numpy as np
 import shutil
+import datetime
 
 id_of_image = input("Enter your ID: ")
 name_of_image = input("Enter your Name: ")
@@ -58,11 +59,12 @@ if name_of_image != None:
                         destination_folder = "./already_add_to_database/"
                         shutil.move(source_file, destination_folder)
                 face_names = np.array(face_names)
-                face_id = np.array(id_of_image)
+                face_id = []
+                face_id.append(id_of_image)
                 print(f"{face_id} {face_names}")
                 np.save(file_path_image, known_face_encodings)
                 np.save(file_path_name, face_names)
-                np.save(file_path_id, id_of_image)
+                np.save(file_path_id, face_id)
 
             else:
                 known_face_encodings = np.load(file_path_image)
